@@ -24,7 +24,10 @@ import edu.wpi.first.wpilibj2.command.MecanumControllerCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import java.util.List;
+
+import frc.robot.Calculations.DashboardCalculations;
 
 
 /*
@@ -57,11 +60,18 @@ public class RobotContainer {
         new RunCommand(
             () ->
                 m_robotDrive.drive(
-                    m_driverController.getLeftX(),
-                    -m_driverController.getLeftY(),
-                    m_driverController.getRightX(),
+                    DashboardCalculations.XValue,
+                    DashboardCalculations.YValue,
+                    DashboardCalculations.Rot,
+                    // m_driverController.getLeftX(),
+                    // -m_driverController.getLeftY(),
+                    // m_driverController.getRightX(),
                     true),
             m_robotDrive));
+
+    m_robotDashboard.setDefaultCommand(
+      
+    )
   }
 
   /**
@@ -73,11 +83,11 @@ public class RobotContainer {
   private void configureButtonBindings() {
     // Drive at half speed when the right bumper is held
     new JoystickButton(m_driverController, Button.kRightBumper.value)
-        .whenPressed(() -> m_robotDrive.setMaxOutput(0.5))
-        .whenReleased(() -> m_robotDrive.setMaxOutput(1));
+        .onTrue(new InstantCommand(() -> m_robotDrive.setMaxOutput(0.5)))
+        .onFalse(new InstantCommand(() -> m_robotDrive.setMaxOutput(1)));
 
     new JoystickButton(m_driverController, Button.kLeftBumper.value)
-        .whenPressed(() -> m_robotDrive.zeroHeading());
+        .onTrue(new InstantCommand(() -> m_robotDrive.zeroHeading()));
   }
 
   /**
