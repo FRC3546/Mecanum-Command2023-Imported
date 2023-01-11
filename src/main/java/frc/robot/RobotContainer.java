@@ -19,6 +19,7 @@ import frc.robot.Constants.AutoConstants;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.OIConstants;
 import frc.robot.subsystems.DriveSubsystem;
+import frc.robot.subsystems.SmartDashboardSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.MecanumControllerCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
@@ -26,7 +27,7 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import java.util.List;
-
+import frc.robot.Calculations;
 import frc.robot.Calculations.DashboardCalculations;
 
 
@@ -39,13 +40,13 @@ import frc.robot.Calculations.DashboardCalculations;
 public class RobotContainer {
   // The robot's subsystems
   private final DriveSubsystem m_robotDrive = new DriveSubsystem();
-
+  private final SmartDashboardSubsystem m_dashboard = new SmartDashboardSubsystem();
 
   
   // The driver's controller
-//   Joystick m_driverController = new Joystick(OIConstants.kDriverControllerPort);
+  Joystick m_driverController = new Joystick(OIConstants.kDriverControllerPort);
 
-  XboxController m_driverController = new XboxController(OIConstants.kDriverControllerPort);
+  // XboxController m_driverController = new XboxController(OIConstants.kDriverControllerPort);
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
@@ -60,18 +61,16 @@ public class RobotContainer {
         new RunCommand(
             () ->
                 m_robotDrive.drive(
-                    DashboardCalculations.XValue,
-                    DashboardCalculations.YValue,
-                    DashboardCalculations.Rot,
-                    // m_driverController.getLeftX(),
-                    // -m_driverController.getLeftY(),
-                    // m_driverController.getRightX(),
+                    // DashboardCalculations.xValue,
+                    // DashboardCalculations.yValue,
+                    // DashboardCalculations.Rot,
+                    m_driverController.getX(),
+                    -m_driverController.getY(),
+                    m_driverController.getZ(),
                     true),
             m_robotDrive));
 
-    m_robotDashboard.setDefaultCommand(
-      
-    )
+    m_dashboard.setDefaultCommand(new RunCommand(() -> m_dashboard.active()));
   }
 
   /**
