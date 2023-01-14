@@ -5,6 +5,7 @@
 package frc.robot.subsystems;
 
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.MecanumDriveMotorVoltages;
 import edu.wpi.first.math.kinematics.MecanumDriveOdometry;
 import edu.wpi.first.math.kinematics.MecanumDriveWheelSpeeds;
@@ -15,6 +16,7 @@ import frc.robot.Constants.DriveConstants;
 import edu.wpi.first.wpilibj.interfaces.Gyro;
 import edu.wpi.first.wpilibj.motorcontrol.VictorSP;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Calculations;
 
 
 // gyro
@@ -134,8 +136,9 @@ public class DriveSubsystem extends SubsystemBase {
    */
   @SuppressWarnings("ParameterName")
   public void drive(double xSpeed, double ySpeed, double rot, boolean fieldRelative) {
+    Calculations.joystickCalculation();
     if (fieldRelative) {
-      m_drive.driveCartesian(ySpeed, xSpeed, Math.pow(rot, 3)*.3);//NOTABLE CHANGE NEW WPI DOESNT TAKE GYRO ANGLE
+      m_drive.driveCartesian(ySpeed, xSpeed, Math.pow(rot, 3)*.3, new Rotation2d((gyro.getAngle()*Math.PI)/180));//NOTABLE CHANGE NEW WPI DOESNT TAKE GYRO ANGLE
     } else {
       // m_drive.driveCartesian(ySpeed, xSpeed, Math.pow(rot, 3))
       System.out.println("gyro failure");

@@ -28,7 +28,6 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import java.util.List;
 import frc.robot.Calculations;
-import frc.robot.Calculations.DashboardCalculations;
 
 
 /*
@@ -61,16 +60,16 @@ public class RobotContainer {
         new RunCommand(
             () ->
                 m_robotDrive.drive(
-                    // DashboardCalculations.xValue,
-                    // DashboardCalculations.yValue,
-                    // DashboardCalculations.Rot,
-                    m_driverController.getX(),
-                    -m_driverController.getY(),
-                    m_driverController.getZ(),
+                    Calculations.xValue,
+                    Calculations.yValue,
+                    Calculations.Rot,
+                    // m_driverController.getX(),
+                    // -m_driverController.getY(),
+                    // m_driverController.getZ(),
                     true),
             m_robotDrive));
 
-    m_dashboard.setDefaultCommand(new RunCommand(() -> m_dashboard.active()));
+    m_dashboard.setDefaultCommand(new RunCommand(() -> m_dashboard.active(), m_dashboard));
   }
 
   /**
